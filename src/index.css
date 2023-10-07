@@ -14,3 +14,7 @@ body {
 button {
   transition: background-color 200ms ease-in-out;
 }
+
+.inputWithButtonOverlay:focus + button {
+  display: none;
+}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import Credential, { CredentialType } from "./Credential";
 import { AddIcon } from "../icons/icons";
+import { CredentialType, getCredentialField } from "../utils/credential";
+import Credential from "./Credential";
 
 const EMPTY_CREDENTIAL: CredentialType = {
   id: 0,
@@ -11,11 +12,17 @@ const EMPTY_CREDENTIAL: CredentialType = {
   created: new Date(),
 };
 
-export const CREDENTIAL_FIELDS = [
-  { id: "email", name: "Email" },
-  { id: "password", name: "Password" },
-  { id: "environment", name: "Environment" },
-  { id: "notes", name: "Notes" },
+type CredentialField = {
+  id: keyof CredentialType;
+  name: string;
+  isCopyable: boolean;
+};
+
+export const CREDENTIAL_FIELDS: CredentialField[] = [
+  { id: "email", name: "Email", isCopyable: true },
+  { id: "password", name: "Password", isCopyable: true },
+  { id: "environment", name: "Environment", isCopyable: false },
+  { id: "notes", name: "Notes", isCopyable: false },
 ];
 
 function CredentialContainer() {
@@ -48,11 +55,13 @@ function CredentialContainer() {
     setCredentials(updatedCredentials);
   };
 
-  const handleKeyPressForEnter = (event) => {
-    if(event.key === 'Enter'){
-      addCredential()
+  const handleKeyPressForEnter = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      addCredential();
     }
-  }
+  };
 
   return (
     <div className="container my-4">
@@ -62,7 +71,7 @@ function CredentialContainer() {
             {CREDENTIAL_FIELDS.map((field) => (
               <th className="px-2 py-1">{field.name}</th>
             ))}
-            <th className="px-2 py-1">Actions</th>
+            <th className="px-2 py-1"></th>
           </tr>
         </thead>
         <tbody>
@@ -81,7 +90,7 @@ function CredentialContainer() {
                 <input
                   type="text"
                   name={field.id}
-                  value={newCredential[field.id]}
+                  value={getCredentialField(newCredential, field.id)}
                   onChange={(e) =>
                     setNewCredential({
                       ...newCredential,
@@ -97,7 +106,7 @@ function CredentialContainer() {
               <div className="flex justify-evenly">
                 <button
                   onClick={addCredential}
-                  className="bg-green-400 hover:bg-green-500 my-auto h-6 px-2 rounded-lg"
+                  className="bg-green-400 hover:bg-green-500 my-auto py-1.5 px-2 rounded-lg"
                 >
                   <AddIcon size={16} />
                 </button>
