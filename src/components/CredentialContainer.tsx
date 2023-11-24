@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AddIcon } from "../icons/icons";
 import { CredentialType, getCredentialField } from "../utils/credential";
 import Credential from "./Credential";
+const { ipcRenderer } = window.require("electron");
 
 const EMPTY_CREDENTIAL: CredentialType = {
   id: 0,
@@ -27,8 +28,20 @@ export const CREDENTIAL_FIELDS: CredentialField[] = [
 
 function CredentialContainer() {
   const [credentials, setCredentials] = useState([]);
+  const [isCredentialsLoaded, setIsCredentialsLoaded] = useState(false);
   const [newCredential, setNewCredential] =
     useState<CredentialType>(EMPTY_CREDENTIAL);
+
+  useEffect(() => {
+    ipcRenderer
+      .invoke("loadData")
+      .then((loadedData) => setCredentials(loadedData));
+    setIsCredentialsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    isCredentialsLoaded && ipcRenderer.send("saveData", credentials);
+  }, [credentials]);
 
   const addCredential = () => {
     setCredentials([...credentials, newCredential]);
