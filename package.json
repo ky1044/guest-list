@@ -1,6 +1,6 @@
 {
-  "name": "cred-shake",
-  "productName": "cred-shake",
+  "name": "guest-list",
+  "productName": "guest-list",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".webpack/main",
