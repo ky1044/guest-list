@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { CREDENTIAL_FIELDS } from "./CredentialContainer";
 import {
   CheckIcon,
@@ -44,8 +44,8 @@ function Credential({
     setIsEditing(false);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = (e: SyntheticEvent) => {
+    const { name, value } = e.target as HTMLInputElement;
     setIsEdited(true);
     setEditedCredential({ ...editedCredential, [name]: value });
   };

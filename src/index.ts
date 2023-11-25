@@ -25,6 +25,7 @@ const createWindow = (): void => {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       nodeIntegration: true,
       contextIsolation: false,
+      devTools: false,
     },
   });
 
@@ -32,7 +33,7 @@ const createWindow = (): void => {
   window.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  window.webContents.openDevTools();
+  // window.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
